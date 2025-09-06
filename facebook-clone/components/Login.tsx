@@ -1,17 +1,14 @@
 'use client';
-
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import axios from "axios";
+import router from 'next/router';
 import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/firebase';
-// import { doc, getDoc } from "firebase/firestore";
 
 
 
 export default function LoginPage() {
-    const router = useRouter(); // ✅ define at the top of your component
 
+    const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,21 +16,24 @@ export default function LoginPage() {
         e.preventDefault();
 
         try {
-           const login =  await signInWithEmailAndPassword(auth, email, password);
-            router.push('/feed'); // ✅ redirect to feed
-        } catch (error: any) {
-            alert('Login failed: ' + error.message);
+            const res = await axios.post("http://localhost:5000/api/auth/login", {
+                email,
+                password,
+            });
+
+            // Save the token and user info
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+
+            //Redirect to feed or homepage
+            router.push("/feed")
+
+        } catch (err) {
+            console.error(err);
+            alert("Login failed")
+
         }
 
-        // const docRef = doc(db, "user", email);
-        // const docSnap = await getDoc(docRef);
-
-        // if (docSnap.exists()) {
-        //     console.log("Document data:", docSnap.data());
-        // } else {
-        //     // docSnap.data() will be undefined in this case
-        //     console.log("No such document!");
-        // }
 
     };
     return (

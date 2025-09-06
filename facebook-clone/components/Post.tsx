@@ -12,7 +12,8 @@ import { AiOutlineCamera, AiOutlineGif } from "react-icons/ai";
 import { BiWorld } from "react-icons/bi";
 import Image from "next/image";
 
-const Post = () => {
+const Post = ({ post }) => {
+  const { userId, text, createdAt } = post;
 
   return (
     <div className='bg-white rounded-[1rem] px-5 py-4 '>
@@ -23,10 +24,10 @@ const Post = () => {
             <Image src={user} alt='user' className='rounded-full' />
           </div>
           <div className='ml-3'>
-            <p className='font-bold '>Priscilia Osumaka</p>
+            <p className='font-bold'>{userId?.name || "Unknown User"}</p>
 
             <div className="flex">
-              <p className='text-xs '>3 hours ago &#8226; </p>
+              <p className='text-xs '>{createdAt?.slice(0, 10) || "Just now"}&#8226;</p>
               <BiWorld className='ml-1 shrink-0' />
             </div>
           </div>
@@ -37,14 +38,20 @@ const Post = () => {
         </div>
       </div>
 
+      {/* POST CONTENTS */}
+
       {/* input */}
       <div className="my-3 ">
-        <p>Simple, yet chic.</p>
+        <p>{text}</p>
       </div>
 
       {/* image */}
       <div className="-mx-5">
-        <Image src={user} alt='image' />
+        <Image src={`http://localhost:5000/uploads/${post.imagePath}`} alt='post-img' 
+        width={400}
+        height={400}
+        className='rounded mt-2 w-full '
+        />
       </div>
 
       {/* number of likes * buttons */}
