@@ -27,11 +27,11 @@ const Feed = () => {
     }, []);
 
     return (
-        <div className='flex bg-[#f2f3f7]'>
+        <div className='flex bg-[#f2f3f7] overflow-hidden h-screen'>
             {/* left sidebar */}
             <LeftSidebar />
 
-            <div className="mx-auto">
+            <div className="mx-auto overflow-y-auto no-scrollbar">
                 {/* createpost */}
                 <CreatePost />
 
